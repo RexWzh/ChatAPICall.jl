@@ -41,3 +41,5 @@ function proxy_status()
     end
 end
 
+## Julia test for proxy
+

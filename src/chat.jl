@@ -1,4 +1,27 @@
 # Methods for the struct Chat
+"""
+    Chat
+
+Chat with OpenAI API.
+
+# Fields
+
+- `chat_log::Vector{Dict}`: The chat log.
+"""
+struct Chat
+    chat_log::Vector{Dict}
+end
+Chat() = Chat(Dict[])
+
+"""
+    defaultprompt(msg::AbstractString)
+
+Default prompt for `Chat(msg:AbstractString)`.
+"""
+defaultprompt(msg::AbstractString) = [
+    Dict("role" => "user", "text" => msg),
+]
+Chat(msg::AbstractString) = Chat(defaultprompt(msg))
 
 """
     add!(chat::Chat, role::AbstractString, content::AbstractString)
@@ -98,25 +121,5 @@ end
 Print the chat log.
 """
 Base.print(io::IO, chat::Chat) = print(io, chat, "\n" * "-" ^ 15 * "\n")
-
-
-"""
-    getresponse( chat::Chat
-               , maxrequests::Int=1
-               , compact::Bool=true
-               , model::AbstractString="gpt-3.5-turbo"
-               , **options)::Resp
-    
-Get a response from OpenAI API.
-
-# Arguments
-
-- `chat::Chat`: The chat log.
-- `maxrequests::Int`: The maximum number of requests to OpenAI API.
-- `compact::Bool`: Whether to compact the response.
-- `model::AbstractString`: The model to use.
-- `**options`: Other options to pass to `OpenAICall.request`.
-"""
-getresponse() = nothing
     
 end
