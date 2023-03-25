@@ -6,16 +6,29 @@ export
     # proxy
     proxy_on, proxy_off, proxy_status,
     # chat
-    Chat, getresponse, defaultprompt,
+    Chat, getresponse, defaultprompt, showapikey,
     add!, adduser!, addsystem!, addassistant!,
     # resp
     Resp, ErrResp
 
 # get api key
-if !isnothing(get(ENV, "OPENAI_API_KEY", nothing))
-    api_key = ENV["OPENAI_API_KEY"]
+if !isnothing(get(ENV, "OPENAI_apikey", nothing))
+    apikey = ENV["OPENAI_apikey"]
 else
-    api_key = nothing
+    apikey = nothing
+end
+
+"""
+    showapikey()
+
+Show the OpenAI API key.
+"""
+function showapikey()
+    if apikey === nothing
+        println("`apikey` is not set.")
+    else
+        println("apikey: ", apikey)
+    end
 end
 
 include("http.jl")
