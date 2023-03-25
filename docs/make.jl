@@ -22,4 +22,6 @@ makedocs(;
 deploydocs(;
     repo="github.com/RexWzh/OpenAICall.jl",
     devbranch="main",
+    devurl = "dev",
+    versions = ["v#.#", "dev" => "dev", "stable" => "v^"],
 )
