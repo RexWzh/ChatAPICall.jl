@@ -57,6 +57,6 @@ jobs:
       - run: |
           julia --project=docs -e '
             using Documenter: DocMeta, doctest
-            using OpenAICall
-            DocMeta.setdocmeta!(OpenAICall, :DocTestSetup, :(using OpenAICall); recursive=true)
-            doctest(OpenAICall)'
+            using ChatAPICall
+            DocMeta.setdocmeta!(ChatAPICall, :DocTestSetup, :(using ChatAPICall); recursive=true)
+            doctest(ChatAPICall)'

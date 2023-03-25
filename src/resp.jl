@@ -1,3 +1,4 @@
+
 """
     Resp
 
@@ -21,7 +22,26 @@ struct Resp
     model::String
 end
 
-function Resp(response::Dict, compact::Bool=true)
+"""
+    ErrResp
+
+Error response from OpenAI API.
+
+# Fields
+
+- `message::String`: The error message.
+- `type::String`: The error type.
+- `param::Union{Nothing, String}`: The parameter that caused the error.
+- `code::String`: The error code.
+"""
+struct ErrResp
+    message::String
+    type::String
+    param::Union{Nothing, String}
+    code::String
+end
+
+function Resp(response::AbstractDict; compact::Bool=true)
     content = response["choices"][1]["message"]["content"]
     if compact
         content = strip(content)

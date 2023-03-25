@@ -1,14 +1,14 @@
 ```@meta
-CurrentModule = OpenAICall
+CurrentModule = ChatAPICall
 ```
 
-# OpenAICall
+# ChatAPICall
 
-Documentation for [OpenAICall](https://github.com/RexWzh/OpenAICall.jl).
+Documentation for [ChatAPICall](https://github.com/RexWzh/ChatAPICall.jl).
 
 ```@index
 ```
 
 ```@autodocs
-Modules = [OpenAICall]
+Modules = [ChatAPICall]
 ```
