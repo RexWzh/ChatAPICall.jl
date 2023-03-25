@@ -1,8 +1,5 @@
 using ChatAPICall
-using Test
+using Test, JSON
 
 include("tst_proxy.jl")
-
-@testset "ChatAPICall.jl" begin
-    # Write your tests here.
-end
+include("tst_chat.jl")

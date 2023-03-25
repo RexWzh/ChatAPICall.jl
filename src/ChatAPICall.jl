@@ -6,7 +6,7 @@ export
     # proxy
     proxy_on, proxy_off, proxy_status,
     # chat
-    Chat, getresponse,
+    Chat, getresponse, defaultprompt,
     add!, adduser!, addsystem!, addassistant!,
     # resp
     Resp, ErrResp
