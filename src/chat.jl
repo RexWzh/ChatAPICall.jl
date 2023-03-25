@@ -101,7 +101,7 @@ Base.length(chat::Chat) = length(chat.chatlog)
 Show information of the chat log.
 """
 function Base.show(io::IO, chat::Chat)
-    show(io, "<Chat with ", length(chat), " messages>")
+    print(io, "< Chat with ", length(chat), " message(s) >")
 end
 
 """

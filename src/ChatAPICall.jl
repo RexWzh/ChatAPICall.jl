@@ -48,7 +48,7 @@ function getresponse( chat::Chat
     while maxrequests != 0
         resp = request(chat.chatlog, model=model, options...)
         if resp.status == 200
-            return Resp(JSON.parse(String(resp.body)), compact)
+            return Resp(JSON.parse(String(resp.body)), compact=compact)
         else
             nothing # TODO: handle error
         end
