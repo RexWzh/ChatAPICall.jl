@@ -20,4 +20,7 @@ end
     proxy_status()
     proxy_off()
     @test true
+
+    showapikey()
+    @test true
 end
