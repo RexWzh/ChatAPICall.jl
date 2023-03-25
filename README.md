@@ -14,10 +14,10 @@ A simple wrapper for OpenAI's [API](https://platform.openai.com/docs/api-referen
 
 ```julia
 using ChatAPICall
-ChatAPICall.apikey("sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+ChatAPICall.apikey = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-Or set `OPENAI_API_KEY` in `~/.bashrc` to automatically set it when you start the terminal:
+Or set `OPENAI_API_KEY` in `~/.bashrc` to automatically load the API key when using the package:
 
 ```bash
 # Add the following code to ~/.bashrc
@@ -54,7 +54,7 @@ proxy_status()
 
 # Send prompt and return response
 chat = Chat("Hello, GPT-3.5!")
-resp = getresponse(chat, update=false) # Do not update the chat history, default is true
+resp = getresponse(chat)
 ```
 
 Example 2, customize the message template and return the information and the number of consumed tokens:
@@ -63,7 +63,7 @@ Example 2, customize the message template and return the information and the num
 using ChatAPICall
 
 # Customize the sending template
-function ChatAPICall.default_prompt(msg)
+function ChatAPICall.defaultprompt(msg)
     [
         Dict("role"=>"system", "content"=>"帮我翻译这段文字"),
         Dict("role"=>"user", "content"=>msg)
@@ -84,7 +84,7 @@ Continue chatting based on the last response:
 ```julia
 # first call
 chat = Chat("Hello, GPT-3.5!")
-resp = getresponse(chat) # update chat history, default is true
+resp = getresponse!(chat) # update chat history
 println(resp.content)
 
 # continue chatting
