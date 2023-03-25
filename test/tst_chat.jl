@@ -1,26 +1,3 @@
-valid_response = """{
-    "id":"chatcmpl-6wXDUIbYzNkmqSF9UnjPuKLP1hHls",
-    "object":"chat.completion",
-    "created":1679408728,
-    "model":"gpt-3.5-turbo-0301",
-    "usage":{
-        "prompt_tokens":8,
-        "completion_tokens":10,
-        "total_tokens":18
-    },
-    "choices":[
-        {
-            "message":{
-                "role":"assistant",
-                "content":"Hello, how can I assist you today?"
-            },
-            "finish_reason":"stop",
-            "index":0
-        }
-    ]
-}"""
-
-valid_response = JSON.parse(valid_response)
 
 @testset "Chat" begin
     chat = Chat()
@@ -131,4 +108,18 @@ end
     @test sprint(print, chat) == ""
     adduser!(chat, "Hello, world!")
     @test sprint(print, chat) == "\n---------------\nuser\n---------------\nHello, world!"
+end
+
+
+@testset "Resp" begin
+    resp = Resp(valid_response)
+    @test resp.total_tokens == 18
+    @test resp.prompt_tokens == 8
+    @test resp.completion_tokens == 10
+    @test resp.content == "Hello, how can I assist you today?"
+    @test resp.id == "chatcmpl-6wXDUIbYzNkmqSF9UnjPuKLP1hHls"
+    @test resp.model == "gpt-3.5-turbo-0301"
+
+    resp = Resp(valid_response, compact=false)
+    @test resp.content == "Hello, how can I assist you today?"
 end
