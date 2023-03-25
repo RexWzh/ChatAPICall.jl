@@ -14,14 +14,17 @@ end
 Chat() = Chat(Dict[])
 
 """
-    defaultprompt(msg::AbstractString)
+    defaultprompt(msg)
 
 Default prompt for `Chat(msg:AbstractString)`.
 """
-defaultprompt(msg::AbstractString) = [
+defaultprompt(msg) = [
     Dict("role" => "user", "content" => msg),
 ]
-Chat(msg::AbstractString) = Chat(defaultprompt(msg))
+function Chat(msg::AbstractString)
+    msg = defaultprompt(msg)
+    Chat(msg)
+end
 
 """
     add!(chat::Chat, role::AbstractString, content::AbstractString)

@@ -85,7 +85,7 @@ function getresponse!( chat::Chat
                      , compact::Bool=true
                      , model::AbstractString="gpt-3.5-turbo"
                      , options...)::Resp
-    resp = getresponse(chat, maxrequests, compact, model, options...)
+    resp = getresponse(chat; maxrequests=maxrequests, compact=compact, model=model, options...)
     add!(chat, resp)
     return resp 
 end

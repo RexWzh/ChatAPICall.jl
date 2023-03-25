@@ -72,7 +72,7 @@ end
 
 chat = Chat("Hello!")
 # Set the number of retries to Inf
-response = getresponse(chat, temperature=0.5, max_requests=Inf)
+response = getresponse(chat; temperature=0.5, maxrequests=-1)
 println("Number of consumed tokens: ", response.total_tokens)
 println("Returned content: ", response.content)
 ```
@@ -89,7 +89,7 @@ println(resp.content)
 
 # continue chatting
 adduser!(chat, "How are you?")
-next_resp = getresponse(chat)
+next_resp = getresponse!(chat)
 println(next_resp.content)
 
 # fake response
@@ -97,7 +97,7 @@ adduser!(chat, "What's your name?")
 addassistant!(chat, "My name is GPT-3.5.")
 
 # print chat history
-printlog(chat)
+print(chat)
 ```
 
 ## License
