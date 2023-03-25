@@ -14,10 +14,10 @@ A simple wrapper for OpenAI's [API](https://platform.openai.com/docs/api-referen
 
 ```julia
 using ChatAPICall
-ChatAPICall.apikey("sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+ChatAPICall.apikey = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-Or set `OPENAI_API_KEY` in `~/.bashrc` to automatically set it when you start the terminal:
+Or set `OPENAI_API_KEY` in `~/.bashrc` to automatically load the API key when using the package:
 
 ```bash
 # Add the following code to ~/.bashrc
@@ -54,7 +54,7 @@ proxy_status()
 
 # Send prompt and return response
 chat = Chat("Hello, GPT-3.5!")
-resp = getresponse(chat, update=false) # Do not update the chat history, default is true
+resp = getresponse(chat)
 ```
 
 Example 2, customize the message template and return the information and the number of consumed tokens:
@@ -63,7 +63,7 @@ Example 2, customize the message template and return the information and the num
 using ChatAPICall
 
 # Customize the sending template
-function ChatAPICall.default_prompt(msg)
+function ChatAPICall.defaultprompt(msg)
     [
         Dict("role"=>"system", "content"=>"帮我翻译这段文字"),
         Dict("role"=>"user", "content"=>msg)
@@ -72,7 +72,7 @@ end
 
 chat = Chat("Hello!")
 # Set the number of retries to Inf
-response = getresponse(chat, temperature=0.5, max_requests=Inf)
+response = getresponse(chat; temperature=0.5, maxrequests=-1)
 println("Number of consumed tokens: ", response.total_tokens)
 println("Returned content: ", response.content)
 ```
@@ -84,12 +84,12 @@ Continue chatting based on the last response:
 ```julia
 # first call
 chat = Chat("Hello, GPT-3.5!")
-resp = getresponse(chat) # update chat history, default is true
+resp = getresponse!(chat) # update chat history
 println(resp.content)
 
 # continue chatting
 adduser!(chat, "How are you?")
-next_resp = getresponse(chat)
+next_resp = getresponse!(chat)
 println(next_resp.content)
 
 # fake response
@@ -97,7 +97,7 @@ adduser!(chat, "What's your name?")
 addassistant!(chat, "My name is GPT-3.5.")
 
 # print chat history
-printlog(chat)
+print(chat)
 ```
 
 ## License

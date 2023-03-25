@@ -6,14 +6,15 @@ export
     # proxy
     proxy_on, proxy_off, proxy_status,
     # chat
-    Chat, getresponse, defaultprompt, showapikey,
+    Chat, getresponse, getresponse!,
+    defaultprompt, showapikey,
     add!, adduser!, addsystem!, addassistant!,
     # resp
     Resp, ErrResp
 
 # get api key
-if !isnothing(get(ENV, "OPENAI_apikey", nothing))
-    apikey = ENV["OPENAI_apikey"]
+if !isnothing(get(ENV, "OPENAI_API_KEY", nothing))
+    apikey = ENV["OPENAI_API_KEY"]
 else
     apikey = nothing
 end
@@ -54,12 +55,12 @@ Get a response from OpenAI API.
 - `**options`: Other options to pass to `ChatAPICall.request`.
 """
 function getresponse( chat::Chat
-                    , maxrequests::Int=1
+                    ; maxrequests::Int=1
                     , compact::Bool=true
                     , model::AbstractString="gpt-3.5-turbo"
                     , options...)::Resp
     while maxrequests != 0
-        resp = request(chat.chatlog, model=model, options...)
+        resp = request(chat.chatlog; model=model, options...)
         if resp.status == 200
             return Resp(JSON.parse(String(resp.body)), compact=compact)
         else
@@ -68,6 +69,25 @@ function getresponse( chat::Chat
         maxrequests -= 1
     end
     throw(ArgumentError("Maximum number of requests reached"))
-end 
+end
+
+"""
+    getresponse!( chat::Chat
+                , maxrequests::Int=1
+                , compact::Bool=true
+                , model::AbstractString="gpt-3.5-turbo"
+                , options...)::Resp
+
+Get a response from OpenAI API and add it to the chat log.
+"""
+function getresponse!( chat::Chat
+                     ; maxrequests::Int=1
+                     , compact::Bool=true
+                     , model::AbstractString="gpt-3.5-turbo"
+                     , options...)::Resp
+    resp = getresponse(chat; maxrequests=maxrequests, compact=compact, model=model, options...)
+    add!(chat, resp)
+    return resp 
+end
 
 end
