@@ -1,3 +1,3 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-OpenAICall = "dab9e3cf-270b-48a8-a707-d6834c795ca3"
+ChatAPICall = "dab9e3cf-270b-48a8-a707-d6834c795ca3"
