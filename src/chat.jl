@@ -44,7 +44,7 @@ Add a response from OpenAI API to the chat log.
 - `resp::Resp`: The response from OpenAI API.
 """
 function add!(chat::Chat, resp::Resp)
-    add!(chat, "system", resp.content)
+    add!(chat, "assistant", resp.content)
 end
 
 """
