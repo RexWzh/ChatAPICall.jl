@@ -1,0 +1,13 @@
+name = "OpenAICall"
+uuid = "dab9e3cf-270b-48a8-a707-d6834c795ca3"
+authors = ["rex <1073853456@qq.com> and contributors"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
