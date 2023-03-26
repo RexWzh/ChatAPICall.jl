@@ -7,7 +7,7 @@ export
     proxy_on, proxy_off, proxy_status,
     # chat
     Chat, getresponse, getresponse!,
-    defaultprompt, showapikey,
+    defaultprompt, showapikey, setapikey,
     add!, adduser!, addsystem!, addassistant!,
     # resp
     Resp, ErrResp
@@ -17,6 +17,15 @@ if !isnothing(get(ENV, "OPENAI_API_KEY", nothing))
     apikey = ENV["OPENAI_API_KEY"]
 else
     apikey = nothing
+end
+
+"""
+    setapikey(key::AbstractString)
+
+Set the OpenAI API key.
+"""
+function setapikey(key::AbstractString)
+    global apikey = key
 end
 
 """
