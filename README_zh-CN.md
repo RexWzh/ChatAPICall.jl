@@ -5,64 +5,63 @@
 [![Build Status](https://github.com/RexWzh/ChatAPICall.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/RexWzh/ChatAPICall.jl/actions/workflows/CI.yml?query=branch%3Amain)
 [![Coverage](https://codecov.io/gh/RexWzh/ChatAPICall.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/RexWzh/ChatAPICall.jl)
 
-A simple wrapper for OpenAI's [API](https://platform.openai.com/docs/api-reference/introduction).
+OpenAI 的[API](https://platform.openai.com/docs/api-reference/introduction)的简单封装。
 
+## 用法
 
-## Usage
-
-### Set API Key
+### 设置 API 密钥
 
 ```julia
 using ChatAPICall
 setapikey("sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 ```
 
-Or set `OPENAI_API_KEY` in `~/.bashrc` to automatically load the API key when using the package:
+或者在使用该包时设置 `OPENAI_API_KEY` 变量以自动加载 API 密钥:
 
 ```bash
-# Add the following code to ~/.bashrc
+# 将以下代码添加到 ~/.bashrc
 export OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
-### Set Proxy (Optional)
+### 设置代理 (可选)
 
 ```julia
 using ChatAPICall
 
-# Set proxy(example)
+# 设置代理 (示例)
 proxy_on(http="127.0.0.1:7890", https="socks://127.0.0.1:7891")
 
-# Check the current proxy
+# 查看当前代理
 proxy_status()
 
-# Turn off proxy
+# 关闭代理
 proxy_off() 
 ```
 
-### Basic Usage
+### 基础使用
 
-Example 1, send prompt and return information:
+示例1：发送消息并返回信息：
 
 ```julia
 using ChatAPICall
 
-# Check if API key is set
+# 检查 API 密钥是否设置
 showapikey()
 
-# Check if proxy is enabled
+# 检查是否开启代理
 proxy_status()
 
-# Send prompt and return response
+# 发送消息并返回响应
 chat = Chat("Hello, GPT-3.5!")
 resp = getresponse(chat)
 ```
 
-Example 2, customize the message template and return the information and the number of consumed tokens:
+示例2：自定义消息模板并返回信息和使用的令牌数：
 
 ```julia
 using ChatAPICall
 
-# Customize the sending template
+# 自定义发送模板
 function ChatAPICall.defaultprompt(msg)
     [
         Dict("role"=>"system", "content"=>"帮我翻译这段文字"),
@@ -71,39 +70,41 @@ function ChatAPICall.defaultprompt(msg)
 end
 
 chat = Chat("Hello!")
-# Set the number of retries to Inf
+# 将重试次数设置为 Inf
 response = getresponse(chat; temperature=0.5, maxrequests=-1)
 println("Number of consumed tokens: ", response.total_tokens)
 println("Returned content: ", response.content)
 ```
 
-### Advanced Usage
 
-Continue chatting based on the last response:
+
+### 进阶使用
+
+根据上一次的响应继续聊天：
 
 ```julia
-# first call
+# 第一次呼叫
 chat = Chat("Hello, GPT-3.5!")
-resp = getresponse!(chat) # update chat history
+resp = getresponse!(chat) # 更新聊天记录
 println(resp.content)
 
-# continue chatting
+# 继续聊天
 adduser!(chat, "How are you?")
 next_resp = getresponse!(chat)
 println(next_resp.content)
 
-# fake response
+# 伪造响应
 adduser!(chat, "What's your name?")
 addassistant!(chat, "My name is GPT-3.5.")
 
-# print chat history
+# 打印聊天记录
 print(chat)
 ```
 
-## License
+## 许可证
 
-This package is licensed under the MIT license. See the LICENSE file for more details.
+本包使用 MIT 许可证。详见 LICENSE 文件。
 
-## Features
+## 特点
 
-* TODO
+* 待完成
