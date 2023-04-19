@@ -1,6 +1,8 @@
 using ChatAPICall
 using Test, JSON
 
+apikey = ENV["OPENAI_API_KEY"]
+
 valid_response = """{
     "id":"chatcmpl-6wXDUIbYzNkmqSF9UnjPuKLP1hHls",
     "object":"chat.completion",
@@ -25,11 +27,6 @@ valid_response = """{
 
 valid_response = JSON.parse(valid_response)
 
-@testset "Test api" begin
-    setapikey("sk-test")
-    @test ChatAPICall.apikey == "sk-test"
-    showapikey()
-end
-
 include("tst_proxy.jl")
 include("tst_chat.jl")
+include("tst_request.jl")

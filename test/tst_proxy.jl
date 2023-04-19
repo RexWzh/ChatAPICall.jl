@@ -1,3 +1,10 @@
+@testset "Test api" begin
+    setapikey("sk-test")
+    @test ChatAPICall.apikey == "sk-test"
+    
+    setapikey(apikey)
+    @test ChatAPICall.apikey == apikey
+end
 
 @testset "proxy_on" begin
     url = "127.0.0.1:7890"
@@ -13,6 +20,7 @@ end
 end
 
 @testset "proxy_status" begin
+    proxy_status()
     url = "127.0.0.1:7890"
     proxy_on(url, url)
     @test ENV["HTTP_PROXY"] == url
@@ -20,7 +28,6 @@ end
     proxy_status()
     proxy_off()
     @test true
-
     showapikey()
     @test true
 end
