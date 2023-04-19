@@ -69,13 +69,14 @@ function getresponse( chat::Chat
                     , model::AbstractString="gpt-3.5-turbo"
                     , options...)::Resp
     while maxrequests != 0
-        resp = request(chat.chatlog; model=model, options...)
-        if resp.status == 200
+        try
+            resp = request(chat.chatlog; model=model, options...)
             return Resp(JSON.parse(String(resp.body)), compact=compact)
-        else
-            nothing # TODO: handle error
+        catch
+            # TODO: Print error logs
+            @warn "Invalid response from OpenAI API."
+            maxrequests -= 1
         end
-        maxrequests -= 1
     end
     throw(ArgumentError("Maximum number of requests reached"))
 end

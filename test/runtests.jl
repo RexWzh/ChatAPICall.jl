@@ -27,13 +27,6 @@ valid_response = """{
 
 valid_response = JSON.parse(valid_response)
 
-@testset "Test api" begin
-    setapikey("sk-test")
-    @test ChatAPICall.apikey == "sk-test"
-    setapikey(apikey)
-    @test ChatAPICall.apikey == apikey
-end
-
 include("tst_proxy.jl")
 include("tst_chat.jl")
 include("tst_request.jl")

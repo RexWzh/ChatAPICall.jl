@@ -12,4 +12,9 @@
     resp2 = getresponse!(chat2; temperature=0.5, top_p=0.5, maxrequests=3)
     @test length(chat2) == 2
     @test resp2.prompt_tokens == resp.prompt_tokens
+
+    # invalid request
+    chat3 = Chat("Hello, GPT-3.5!")
+    setapikey("sk-test")
+    @test_throws ArgumentError getresponse(chat3, maxrequests=3)
 end
