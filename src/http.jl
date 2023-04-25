@@ -1,7 +1,4 @@
 
-base_url = "https://api.openai.com"
-
-
 request(chat::Chat; options...) = request(chat.apikey, chat.chatlog; options...)
 function request(apikey::AbstractString, msg::AbstractVector{<:AbstractDict}; options...)
     isempty(apikey) && throw(ArgumentError("`apikey` is not set!"))
@@ -15,7 +12,7 @@ function request(apikey::AbstractString, msg::AbstractVector{<:AbstractDict}; op
     options["messages"] = msg
     data = JSON.json(options)
     HTTP.post(
-        "https://api.openai.com/v1/chat/completions",
+        "$base_url/v1/chat/completions",
         headers=headers,
         body=data
     )
