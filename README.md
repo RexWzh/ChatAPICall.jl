@@ -39,6 +39,13 @@ proxy_status()
 proxy_off() 
 ```
 
+Or you might want to use a proxy url (It is `https://api.openai.com` by default):
+
+```julia
+using ChatAPICall
+ChatAPICall.base_url = "https://api.example.com"
+```
+
 ### Basic Usage
 
 Example 1, send prompt and return information:
@@ -65,7 +72,7 @@ using ChatAPICall
 # Customize the sending template
 function ChatAPICall.defaultprompt(msg)
     [
-        Dict("role"=>"system", "content"=>"帮我翻译这段文字"),
+        Dict("role"=>"system", "content"=>"Please help me translate the following text."),
         Dict("role"=>"user", "content"=>msg)
     ]
 end

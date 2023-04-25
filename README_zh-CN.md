@@ -16,7 +16,7 @@ using ChatAPICall
 setapikey("sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
 ```
 
-或者在使用该包时设置 `OPENAI_API_KEY` 变量以自动加载 API 密钥:
+或者设置 `OPENAI_API_KEY` 变量以自动加载 API 密钥:
 
 ```bash
 # 将以下代码添加到 ~/.bashrc
@@ -24,6 +24,8 @@ export OPENAI_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
 
 ### 设置代理 (可选)
+
+设置网络代理：
 
 ```julia
 using ChatAPICall
@@ -36,6 +38,13 @@ proxy_status()
 
 # 关闭代理
 proxy_off() 
+```
+
+或者使用代理链接（默认为 `https://api.openai.com`）
+
+```julia
+using ChatAPICall
+ChatAPICall.base_url = "https://api.example.com"
 ```
 
 ### 基础使用
@@ -64,7 +73,7 @@ using ChatAPICall
 # 自定义发送模板
 function ChatAPICall.defaultprompt(msg)
     [
-        Dict("role"=>"system", "content"=>"帮我翻译这段文字"),
+        Dict("role"=>"system", "content"=>"Please help me translate the following text."),
         Dict("role"=>"user", "content"=>msg)
     ]
 end
@@ -75,7 +84,6 @@ response = getresponse(chat; temperature=0.5, maxrequests=-1)
 println("Number of consumed tokens: ", response.total_tokens)
 println("Returned content: ", response.content)
 ```
-
 
 
 ### 进阶使用
