@@ -1,6 +1,11 @@
 
-function request(msg::AbstractVector{<:AbstractDict}; options...)
-    apikey === nothing && throw(ArgumentError("`apikey` is not set!"))
+base_url = "https://api.openai.com"
+
+
+request(chat::Chat; options...) = request(chat.apikey, chat.chatlog; options...)
+function request(apikey::AbstractString, msg::AbstractVector{<:AbstractDict}; options...)
+    isempty(apikey) && throw(ArgumentError("`apikey` is not set!"))
+    # convert options to Dict
     options = Dict{String, Any}(string(key) => val for (key, val) in options)
     haskey(options, "model") || throw(ArgumentError("`model` is not set!"))
     headers = [
