@@ -7,6 +7,7 @@
 
 A simple wrapper for OpenAI's [API](https://platform.openai.com/docs/api-reference/introduction).
 
+> 中文文档移步这里：[README_zh-CN.md](README_zh-CN.md)
 
 ## Usage
 
@@ -43,7 +44,7 @@ Or you might want to use a proxy url (It is `https://api.openai.com` by default)
 
 ```julia
 using ChatAPICall
-ChatAPICall.base_url = "https://api.example.com"
+setbaseurl("https://api.example.com")
 ```
 
 ### Basic Usage

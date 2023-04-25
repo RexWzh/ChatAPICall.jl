@@ -44,7 +44,7 @@ proxy_off()
 
 ```julia
 using ChatAPICall
-ChatAPICall.base_url = "https://api.example.com"
+setbaseurl("https://api.example.com")
 ```
 
 ### 基础使用
