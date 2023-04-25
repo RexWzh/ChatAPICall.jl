@@ -2,6 +2,21 @@ module ChatAPICall
 
 using HTTP, JSON
 
+"""
+    Chat
+
+Chat with OpenAI API.
+
+# Fields
+
+- `chatlog::Vector{Dict}`: The chat log, default to be `Dict[]`.
+- `apikey::String`: The API key, default to be `ChatAPICall.apikey`.
+"""
+Base.@kwdef mutable struct Chat
+    chatlog::Vector{Dict}=Dict[]
+    apikey::String=""
+end
+
 export 
     # proxy
     proxy_on, proxy_off, proxy_status,
@@ -16,7 +31,7 @@ export
 if !isnothing(get(ENV, "OPENAI_API_KEY", nothing))
     apikey = ENV["OPENAI_API_KEY"]
 else
-    apikey = nothing
+    apikey = ""
 end
 
 """
@@ -34,7 +49,7 @@ end
 Show the OpenAI API key.
 """
 function showapikey()
-    if apikey === nothing
+    if isempty(apikey)
         println("`apikey` is not set.")
     else
         println("apikey: ", apikey)
@@ -68,14 +83,16 @@ function getresponse( chat::Chat
                     , compact::Bool=true
                     , model::AbstractString="gpt-3.5-turbo"
                     , options...)::Resp
+    numoftries = 0
     while maxrequests != 0
         try
-            resp = request(chat.chatlog; model=model, options...)
+            resp = request(chat; model=model, options...)
             return Resp(JSON.parse(String(resp.body)), compact=compact)
-        catch
+        catch y
             # TODO: Print error logs
-            @warn "Invalid response from OpenAI API."
+            numoftries += 1
             maxrequests -= 1
+            @warn "Failed attempt $numoftries: $y"
         end
     end
     throw(ArgumentError("Maximum number of requests reached"))

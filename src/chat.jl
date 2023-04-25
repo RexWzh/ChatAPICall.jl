@@ -1,30 +1,29 @@
 # Methods for the struct Chat
 """
-    Chat
-
-Chat with OpenAI API.
-
-# Fields
-
-- `chatlog::Vector{Dict}`: The chat log.
-"""
-struct Chat
-    chatlog::Vector{Dict}
-end
-Chat() = Chat(Dict[])
-
-"""
     defaultprompt(msg)
 
 Default prompt for `Chat(msg:AbstractString)`.
 """
-defaultprompt(msg) = [
-    Dict("role" => "user", "content" => msg),
-]
-function Chat(msg::AbstractString)
-    msg = defaultprompt(msg)
+defaultprompt(msg) = nothing
+
+"""
     Chat(msg)
+
+Initialize Chat object by a message.
+
+By default, the `apikey` is set to be `ChatAPICall.apikey`.
+"""
+function Chat(msg::AbstractString, apikey::AbstractString)
+    # initialize chat log by defaultprompt
+    chatlog = defaultprompt(msg)
+    # if msg is nothing, initialize chat log by a general prompt
+    if isnothing(chatlog)
+        chatlog = [Dict("role" => "user", "content" => msg),]
+    end
+    Chat(chatlog, apikey)
 end
+Chat(msg::AbstractString) = Chat(msg, ChatAPICall.apikey)
+Chat(chatlog::AbstractVector{<:AbstractDict}) = Chat(chatlog, ChatAPICall.apikey)
 
 """
     add!(chat::Chat, role::AbstractString, content::AbstractString)
@@ -82,7 +81,7 @@ end
 
 Copy a chat log.
 """
-Base.copy(chat::Chat) = Chat(copy(chat.chatlog))
+Base.copy(chat::Chat) = Chat(copy(chat.chatlog), chat.apikey)
 
 """
     pop!(chat::Chat)
@@ -104,7 +103,7 @@ Base.length(chat::Chat) = length(chat.chatlog)
 Show information of the chat log.
 """
 function Base.show(io::IO, chat::Chat)
-    print(io, "< Chat with ", length(chat), " message(s) >")
+    print(io, "< Chat object with ", length(chat), " message(s) >")
 end
 
 """
@@ -114,7 +113,7 @@ Print the chat log.
 """
 function Base.print(io::IO, chat::Chat, sep::AbstractString)
     for msg in chat.chatlog
-        print(io, sep, msg["role"], sep, msg["content"])
+        println(io, sep, msg["role"], sep, msg["content"])
     end
 end
 

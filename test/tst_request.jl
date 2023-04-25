@@ -1,8 +1,8 @@
-@test !isnothing(apikey) # apikey should be set
+@test !isempty(apikey) # apikey should be set
 
 @testset "Test from README" begin
     chat = Chat("Hello, GPT-3.5!")
-    resp = getresponse(chat; temperature=0.5, maxrequests=-1)
+    resp = getresponse(chat; temperature=0.5, maxrequests=2)
     @test length(chat) == 1
     println("Number of consumed tokens: ", resp.total_tokens)
     println("Returned content: ", resp.content)
@@ -14,7 +14,12 @@
     @test resp2.prompt_tokens == resp.prompt_tokens
 
     # invalid request
-    chat3 = Chat("Hello, GPT-3.5!")
+    chat4 = Chat("Hello, GPT-3.5!", "sk-test")
+    @test_throws ArgumentError getresponse(chat4, maxrequests=2)
+
+    tmpkey = apikey
     setapikey("sk-test")
-    @test_throws ArgumentError getresponse(chat3, maxrequests=3)
+    chat3 = Chat("Hello, GPT-3.5!")
+    @test_throws ArgumentError getresponse(chat3, maxrequests=2)
+    setapikey(tmpkey)
 end

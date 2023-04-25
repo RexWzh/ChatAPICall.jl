@@ -5,7 +5,25 @@
 
     msg = "Hello, world!"
     chat = Chat(msg)
-    @test chat.chatlog == defaultprompt(msg)
+    @test chat.chatlog == [
+        Dict("role" => "user", "content" => msg),
+    ]
+    # use default prompt
+    ChatAPICall.defaultprompt(msg) = [
+        Dict("role" => "system", "content" => "You are a helpful assistant."),
+        Dict("role" => "user", "content" => msg),
+        ]
+    chat = Chat(msg)
+    @test chat.chatlog == [
+        Dict("role" => "system", "content" => "You are a helpful assistant."),
+        Dict("role" => "user", "content" => msg),
+    ]
+    # reset prompt
+    ChatAPICall.defaultprompt(msg) = nothing
+    chat = Chat(msg)
+    @test chat.chatlog == [
+        Dict("role" => "user", "content" => msg),
+    ]
 end
 
 @testset "add" begin
@@ -100,14 +118,15 @@ end
 
 @testset "show(io::IO, chat::Chat)" begin
     chat = Chat()
-    @test sprint(show, chat) == "< Chat with 0 message(s) >"
+    @test sprint(show, chat) == "< Chat object with 0 message(s) >"
     adduser!(chat, "Hello, world!")
-    @test sprint(show, chat) == "< Chat with 1 message(s) >"
+    @test sprint(show, chat) == "< Chat object with 1 message(s) >"
 
     chat = Chat()
     @test sprint(print, chat) == ""
     adduser!(chat, "Hello, world!")
-    @test sprint(print, chat) == "\n---------------\nuser\n---------------\nHello, world!"
+    sep = "\n" * "-" ^ 15 * "\n"
+    @test sprint(print, chat) == "$(sep)user$(sep)Hello, world!\n"
 end
 
 
