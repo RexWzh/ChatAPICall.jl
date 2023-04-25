@@ -20,6 +20,7 @@ end
 export 
     # proxy
     proxy_on, proxy_off, proxy_status,
+    setbaseurl,
     # chat
     Chat, getresponse, getresponse!,
     defaultprompt, showapikey, setapikey,
@@ -54,6 +55,17 @@ function showapikey()
     else
         println("apikey: ", apikey)
     end
+end
+
+base_url = "https://api.openai.com"
+
+"""
+    setbaseurl(url::AbstractString)
+
+Set the proxy URL of the OpenAI API.
+"""
+function setbaseurl(url::AbstractString)
+    global base_url = url
 end
 
 include("http.jl")
