@@ -24,6 +24,7 @@ function Chat(msg::AbstractString, apikey::AbstractString)
 end
 Chat(msg::AbstractString) = Chat(msg, ChatAPICall.apikey)
 Chat(chatlog::AbstractVector{<:AbstractDict}) = Chat(chatlog, ChatAPICall.apikey)
+Chat() = Chat(Dict[], ChatAPICall.apikey)
 
 """
     add!(chat::Chat, role::AbstractString, content::AbstractString)
